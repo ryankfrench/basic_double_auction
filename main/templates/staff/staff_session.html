@@ -1,0 +1,100 @@
+{%extends "base.html"%}
+{% load crispy_forms_tags %}
+
+{%block head%}
+
+<script type="text/javascript">
+
+    document.addEventListener("DOMContentLoaded", function(){
+        {%include "staff/staff_session/staff_session.js"%}
+    });
+
+</script>
+
+<style>
+
+    .chat {       
+        width: 100%;
+        height: 300px;
+        word-breaK:break-word;
+        overflow-y:scroll;
+        background-color: ghostwhite;
+        display:flex; 
+        flex-direction:column-reverse;
+    }
+    .player_table_row {
+        cursor: pointer;
+    }
+
+    .player_table_cell{
+        cursor: pointer;
+    }
+
+    .player_table_cell:hover {
+        background-color:#ececec;
+    }
+
+</style>
+
+{%endblock head%}
+
+{% block content %}
+
+<!-- modals -->
+<div v-if="session">
+    {%include "help_modal.html"%}
+    {%include "staff/staff_session/session/edit_session_modal.html"%}
+    {%include "staff/staff_session/subjects/edit_subject_modal.html"%}
+    {%include "staff/staff_session/subjects/upload_email_list_modal.html"%}
+    {%include "staff/staff_session/control/send_invitation_modal.html"%}
+</div>
+
+<!-- cards -->
+<div class="row justify-content-lg-center" v-if="!session">
+    <div class="col text-end">
+        <i class="fas fa-cog fa-spin fa-2x"></i>
+    </div>
+</div>
+
+<div class="row justify-content-lg-center mt-4" v-cloak v-if="session">
+    <div class="col-md-9">
+        <div class="row">
+            <div class="col mb-2">
+                {%include "staff/staff_session/subjects/subjects_card.html"%} 
+            </div>               
+        </div>        
+        <div class="row">
+            <div class="col">
+               {%include "staff/staff_session/graph/graph_card.html"%} 
+            </div>            
+        </div>            
+    </div>
+    <div class="col-md-3">
+        <div class="row">
+            <div class="col">
+                {%include "staff/staff_session/session/session_card.html"%}
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col">
+                {%include "staff/staff_session/control/control_card.html"%} 
+            </div>
+        </div>
+        
+        <div class="row mt-2">
+            <div class="col">
+                {%include "staff/staff_session/summary/summary_card.html"%}
+            </div>                
+        </div>
+
+        <div class="row mt-2">
+            <div class="col">
+                {%include "staff/staff_session/data/data_card.html"%}
+            </div>                
+        </div>
+                                           
+    </div>
+</div>
+
+{% endblock %}
