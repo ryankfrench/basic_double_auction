@@ -80,6 +80,15 @@ class ParameterSet(models.Model):
 
             self.save()
 
+            #parameter set player types
+            self.parameter_set_player_types.all().delete()
+
+            new_parameter_set_player_types = new_ps.get("parameter_set_player_types")
+
+            for i in new_parameter_set_player_types:
+                t = main.models.ParameterSetPlayerType.objects.create(parameter_set=self)
+                t.from_dict(new_parameter_set_player_types[i])
+
             #parameter set players
             self.parameter_set_players.all().delete()
 
@@ -111,6 +120,45 @@ class ParameterSet(models.Model):
 
         for i in self.parameter_set_players.all():
             i.setup()
+
+    def add_player_type(self):
+        '''
+        add a parameterset player type
+        '''
+
+        player_type = main.models.ParameterSetPlayerType()
+        player_type.parameter_set = self
+        player_type.type_id = self.parameter_set_player_types.count() + 1
+        player_type.budget = 0
+        player_type.units = 0
+        player_type.save()
+
+        self.update_json_fk(update_player_types=True)
+    
+    def remove_player_type(self, parameterset_player_type_id):
+        '''
+        remove specified parameterset player type
+        '''
+        
+        try:
+            player = self.parameter_set_player_types.get(id=parameterset_player_type_id)
+            player.delete()
+
+        except ObjectDoesNotExist:
+            logger = logging.getLogger(__name__) 
+            logger.warning(f"parameter set remove_player, not found ID: {parameterset_player_type_id}")
+
+        self.update_player_type_count()
+        self.update_json_fk(update_player_types=True)
+    
+    def update_player_type_count(self):
+        '''
+        update the number of parameterset players
+        '''
+        for count, i in enumerate(self.parameter_set_player_types.all()):
+            i.type_id = count + 1
+            i.update_json_local()
+            i.save()
 
     def add_player(self):
         '''
@@ -177,13 +225,16 @@ class ParameterSet(models.Model):
 
         self.save()
     
-    def update_json_fk(self, update_players=False):
+    def update_json_fk(self, update_players=False, update_player_types=False):
         '''
         update json model
         '''
         if update_players:
             self.json_for_session["parameter_set_players_order"] = list(self.parameter_set_players.all().values_list('id', flat=True))
             self.json_for_session["parameter_set_players"] = {p.id : p.json() for p in self.parameter_set_players.all()}
+        
+        if update_player_types:
+            self.json_for_session["parameter_set_player_types"] = {t.id : t.json() for t in self.parameter_set_player_types.all()}
 
         self.save()
 
@@ -195,7 +246,7 @@ class ParameterSet(models.Model):
            update_required:
             self.json_for_session = {}
             self.update_json_local()
-            self.update_json_fk(update_players=True)
+            self.update_json_fk(update_players=True, update_player_types=True)
 
         return self.json_for_session
     

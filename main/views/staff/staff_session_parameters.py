@@ -19,7 +19,8 @@ from main.models import Session
 
 from main.forms import ImportParametersForm
 from main.forms import ParameterSetForm
-from main.forms import parameter_set_player_form
+from main.forms import ParameterSetPlayerForm
+from main.forms import ParameterSetPlayerTypeForm
 
 class StaffSessionParametersView(SingleObjectMixin, View):
     '''
@@ -37,7 +38,8 @@ class StaffSessionParametersView(SingleObjectMixin, View):
         '''
         session = self.get_object()
 
-        parameterset_player_form = parameter_set_player_form()
+        parameterset_player_form = ParameterSetPlayerForm()
+        parameterset_player_type_form = ParameterSetPlayerTypeForm()
 
         parameterset_form_ids=[]
         for i in ParameterSetForm():
@@ -47,6 +49,10 @@ class StaffSessionParametersView(SingleObjectMixin, View):
         for i in parameterset_player_form:
             parameterset_player_form_ids.append(i.html_name)
 
+        parameterset_player_type_form_ids=[]
+        for i in parameterset_player_type_form:
+            parameterset_player_type_form_ids.append(i.html_name)
+
         return render(request=request,
                       template_name=self.template_name,
                       context={"channel_key" : uuid.uuid4(),
@@ -54,8 +60,10 @@ class StaffSessionParametersView(SingleObjectMixin, View):
                                "id" : session.id,
                                "parameter_set_form" : ParameterSetForm(),
                                "parameter_set_player_form" : parameterset_player_form,
+                               "parameter_set_player_type_form" : parameterset_player_type_form,
                                "parameterset_form_ids" : parameterset_form_ids,
                                "parameterset_player_form_ids" : parameterset_player_form_ids,
+                               "parameterset_player_type_form_ids" : parameterset_player_type_form_ids,
                                "import_parameters_form" : ImportParametersForm(user=request.user, session_id=session.id),     
                                "websocket_path" : self.websocket_path,
                                "page_key" : f'{self.websocket_path}-{session.id}',

@@ -9,6 +9,7 @@ from .instruction_set import InstructionSet
 from .instruction import Instruction
 
 from .parameter_set import ParameterSet
+from .parameter_set_player_type import ParameterSetPlayerType
 from .parameter_set_player import ParameterSetPlayer
 
 from .session import Session

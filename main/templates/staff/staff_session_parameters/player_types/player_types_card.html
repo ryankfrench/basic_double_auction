@@ -1,0 +1,72 @@
+<div class="card">                  
+    <div class="card-header fw-bold">                
+        <span class="align-middle">
+            Player Types ([[ Object.keys(parameter_set.parameter_set_player_types).length]]) 
+        </span>      
+
+        <span class="float-end">
+            <button type="button" class="btn btn-link ms-4" title="Show Help Doc" v-on:click="send_load_help_doc('Staff Parameters Player Types')">
+                <i class="far fa-question-circle"></i> 
+            </button>
+        </span> 
+                
+    </div>
+    <div class="card-body" >        
+
+        <div class="row justify-content-center">
+            <!-- player types -->
+            <div class="col-md-auto text-center">                
+                <div class="table-responsive">
+                <table class="table table-condensed"> 
+                    <thead>
+                        <tr>
+                            <th scope="col" class = "m-1 p-1">
+                                Type ID
+                            </th> 
+                            <th scope="col" class = "m-1 p-1">
+                                Budget
+                            </th>
+                            <th scope="col" class = "m-1 p-1">
+                                Units
+                            </th>                      
+                        </tr>
+                    </thead>
+                    <tbody id="player_type_list">
+                        <tr v-for="(p, index) in parameter_set.parameter_set_player_types" v-bind:key="p">
+                            <td v-on:click="show_edit_parameter_set_player_type(index)" 
+                                class="player_table_cell">
+                                [[p.type_id]]
+                            </td>
+                            <td v-on:click="show_edit_parameter_set_player_type(index)" 
+                                class="player_table_cell">
+                                [[p.budget]]
+                            </td>
+                            <td v-on:click="show_edit_parameter_set_player_type(index)" 
+                                class="player_table_cell">
+                                [[p.units]]
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <!-- copy groups forward -->
+                        <tr>
+                            <td>
+                                <button class="btn btn-outline-success btn-sm"
+                                        type="button"
+                                        title="Add player"
+                                        v-bind:disabled="session.started || reconnecting || working"
+                                        v-on:click="send_add_parameter_set_player_type()">
+                                       Add <i class="fas fa-plus"></i>
+                                </button>
+                            </td>                            
+                            <td>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                </div>
+            </div>
+        </div>  
+        
+    </div>                    
+</div> 
