@@ -16,7 +16,7 @@ class ParameterSetPlayerForm(forms.ModelForm):
     id_label = forms.CharField(label='Label Used in Chat',
                                widget=forms.TextInput(attrs={"v-model":"current_parameter_set_player.id_label",}))
     
-    parameter_set_player_type = forms.ModelChoiceField(label='Player Type', queryset= ParameterSetPlayerType.objects.all(), empty_label=None)
+    parameter_set_player_type = forms.ModelChoiceField(label='Player Type', queryset = ParameterSetPlayerType.objects.all())
 
     class Meta:
         model=ParameterSetPlayer
