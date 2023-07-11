@@ -39,6 +39,8 @@ class StaffSessionParametersView(SingleObjectMixin, View):
         session = self.get_object()
 
         parameterset_player_form = ParameterSetPlayerForm()
+        parameterset_player_form.fields['parameter_set_player_type'].queryset = session.parameter_set.parameter_set_player_types.all()
+        
         parameterset_player_type_form = ParameterSetPlayerTypeForm()
 
         parameterset_form_ids=[]

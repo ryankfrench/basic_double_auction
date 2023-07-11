@@ -169,6 +169,10 @@ class ParameterSet(models.Model):
         player.parameter_set = self
         player.player_number = self.parameter_set_players.count() + 1
         player.id_label = player.player_number
+
+        if self.parameter_set_player_types.count() == 0:
+            player.type = self.param
+
         player.save()
 
         self.update_json_fk(update_players=True)
