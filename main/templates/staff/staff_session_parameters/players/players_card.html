@@ -43,7 +43,7 @@
                             </td>
                             <td v-on:click="show_edit_parameter_set_player(p)" 
                                 class="player_table_cell">
-                                [[parameter_set.parameter_set_players[p].parameter_set_player_type]]
+                                [[JSON.stringify(parameter_set.parameter_set_players[p].parameter_set_player_type.type_id)]]
                             </td>
                             
                         </tr>

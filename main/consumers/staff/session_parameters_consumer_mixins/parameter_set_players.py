@@ -71,10 +71,11 @@ def take_update_parameter_set_player(data):
         return
     
     form_data_dict = form_data
+    form_data_dict["parameter_set_player_type"] = form_data_dict["parameter_set_player_type"]["id"]
 
     logger.info(f'form_data_dict : {form_data_dict}')
 
-    form = parameter_set_player_form(form_data_dict, instance=parameter_set_player)
+    form = ParameterSetPlayerForm(form_data_dict, instance=parameter_set_player)
     form.fields['parameter_set_player_type'].queryset = parameter_set_player.parameter_set.parameter_set_player_types.all()
 
     if form.is_valid():         

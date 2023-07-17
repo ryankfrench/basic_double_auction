@@ -14,14 +14,15 @@ var app = Vue.createApp({
                     first_load_done : false,          //true after software is loaded for the first time
                     help_text : "Loading ...",
                     session : {{session_json | safe}},
-                    parameter_set : {{parameter_set_json | safe}},                   
-    
-                    current_parameter_set_player : {
-                        id:0,
-                    },
+                    parameter_set : {{parameter_set_json | safe}},     
 
                     current_parameter_set_player_type : {
-                        id:0,
+                        id: 0,
+                    },     
+    
+                    current_parameter_set_player : {
+                        id: 0,
+                        parameter_set_player_type: {id: 0, type_id: 0},
                     },
 
                     parameterset_form_ids: {{parameterset_form_ids|safe}},

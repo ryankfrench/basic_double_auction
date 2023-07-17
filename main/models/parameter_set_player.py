@@ -39,7 +39,7 @@ class ParameterSetPlayer(models.Model):
 
         self.id_label = new_ps.get("id_label")
         self.player_number = new_ps.get("player_number")
-        self.parameter_set_player_type = ParameterSetPlayerType.objects.get(id=new_ps.get("player_type"))
+        self.parameter_set_player_type = ParameterSetPlayerType.objects.get(id=new_ps.get("parameter_set_player_type"))
 
         self.save()
         
@@ -72,7 +72,7 @@ class ParameterSetPlayer(models.Model):
             "id" : self.id,
             "player_number" : self.player_number,
             "id_label" : self.id_label,
-            "player_type" : self.parameter_set_player_type.type_id if self.parameter_set_player_type else None,
+            "parameter_set_player_type" : self.parameter_set_player_type.json() if self.parameter_set_player_type else None,
         }
     
     def get_json_for_subject(self, update_required=False):

@@ -114,6 +114,10 @@ class ParameterSet(models.Model):
         '''
         default setup
         '''    
+        self.add_player_type()
+        self.add_player()
+        
+
         self.json_for_session = None
 
         self.save()
@@ -133,7 +137,8 @@ class ParameterSet(models.Model):
         player_type.units = 0
         player_type.save()
 
-        self.update_json_fk(update_player_types=True)
+        if (self.json_for_session):
+            self.update_json_fk(update_player_types=True)
     
     def remove_player_type(self, parameterset_player_type_id):
         '''
@@ -169,13 +174,12 @@ class ParameterSet(models.Model):
         player.parameter_set = self
         player.player_number = self.parameter_set_players.count() + 1
         player.id_label = player.player_number
-
-        if self.parameter_set_player_types.count() == 0:
-            player.type = self.param
+        player.parameter_set_player_type = self.parameter_set_player_types.first()
 
         player.save()
 
-        self.update_json_fk(update_players=True)
+        if (self.json_for_session):
+            self.update_json_fk(update_players=True)
     
     def remove_player(self, parameterset_player_id):
         '''

@@ -17,12 +17,13 @@ class ParameterSetPlayerForm(forms.ModelForm):
                                widget=forms.TextInput(attrs={"v-model":"current_parameter_set_player.id_label",}))
     
     parameter_set_player_type = forms.ModelChoiceField(label='Player Type', 
-                                                       queryset = ParameterSetPlayerType.objects.none())
-                                                       #widget=forms.Select(attrs={"v-model":"current_parameter_set_player.parameter_set_player_type.id"}))
+                                                       queryset = ParameterSetPlayerType.objects.none(),
+                                                       widget=forms.Select(attrs={"v-model":"current_parameter_set_player.parameter_set_player_type.id"}))
 
     def __init__(self, *args, **kwargs):
         parameter_set_id = kwargs.pop('parameter_set_id', None)
         super(ParameterSetPlayerForm, self).__init__(*args, **kwargs)
+        self.fields['parameter_set_player_type'].label_from_instance = lambda obj: "%s" % obj.type_id
         if parameter_set_id:
             parameter_set_player_type = ParameterSetPlayerType.objects.filter(parameter_set_id=parameter_set_id)
 
